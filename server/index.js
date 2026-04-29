@@ -14,15 +14,29 @@ app.use(express.json({ limit: '10mb' }));
 
 const logStream = fs.createWriteStream(path.join(__dirname, 'error.log'), { flags: 'a' });
 
+// Helper function to generate a unique ID in the format GID-XXXX-XXXX
+async function generateUniqueId() {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let idNumber;
+  let exists = true;
+
+  while (exists) {
+    const part1 = Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+    const part2 = Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+    idNumber = `GID-${part1}-${part2}`;
+    const existingCard = await Card.findOne({ where: { idNumber } });
+    exists = !!existingCard;
+  }
+
+  return idNumber;
+}
+
 app.post('/api/generate-id', async (req, res) => {
   try {
-    const { firstName, lastName, idNumber, department, validUntil, image } = req.body;
+    const { firstName, lastName, department, validUntil, image } = req.body;
     
-    // Check if card with same idNumber already exists
-    const existingCard = await Card.findOne({ where: { idNumber } });
-    if (existingCard) {
-      return res.status(400).json({ success: false, message: 'Card ID already exists' });
-    }
+    // Auto-generate a unique ID number
+    const idNumber = await generateUniqueId();
 
     const newUser = await User.create({
       firstName,

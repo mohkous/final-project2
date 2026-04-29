@@ -7,7 +7,6 @@ function IDCardGeneration() {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
-    idNumber: '',
     department: '',
     validUntil: ''
   });
@@ -123,7 +122,6 @@ function IDCardGeneration() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-stack-md">
                   <InputField label="First Name" id="firstName" value={formData.firstName} onChange={handleChange} />
                   <InputField label="Last Name" id="lastName" value={formData.lastName} onChange={handleChange} />
-                  <InputField label="ID Number" id="idNumber" value={formData.idNumber} onChange={handleChange} mono />
                   
                   <div className="flex flex-col gap-stack-sm">
                     <label className="font-label-caps text-label-caps text-on-surface uppercase">Department</label>
@@ -146,7 +144,7 @@ function IDCardGeneration() {
 
                 <div className="mt-stack-md flex justify-end gap-stack-sm">
                   <button 
-                    onClick={() => { setCapturedImage(null); setFormData({ firstName: '', lastName: '', idNumber: '', department: '', validUntil: '' }); }}
+                    onClick={() => { setCapturedImage(null); setGeneratedCard(null); setFormData({ firstName: '', lastName: '', department: '', validUntil: '' }); }}
                     className="px-6 py-3 rounded-md border border-primary text-primary" 
                     type="button"
                   >
@@ -203,7 +201,7 @@ function IDCardGeneration() {
                 <div className="grid grid-cols-2 gap-stack-sm z-10 bg-primary/20 p-4 rounded-lg backdrop-blur-sm mt-stack-sm border border-on-primary/10">
                   <div>
                     <div className="font-label-caps text-on-primary/70 uppercase">ID Number</div>
-                    <div className="font-data-mono truncate">{formData.idNumber}</div>
+                    <div className="font-data-mono truncate">{generatedCard?.idNumber || 'Auto-generated'}</div>
                   </div>
                   <div>
                     <div className="font-label-caps text-on-primary/70 uppercase">Valid Until</div>
