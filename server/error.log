@@ -1,0 +1,48 @@
+[2026-04-27T12:39:32.294Z] ERROR: SQLITE_ERROR: no such column: qrCode
+Error
+    at Database.<anonymous> (C:\Users\hp\Desktop\progect final\server\node_modules\sequelize\lib\dialects\sqlite\query.js:185:27)
+    at C:\Users\hp\Desktop\progect final\server\node_modules\sequelize\lib\dialects\sqlite\query.js:183:50
+    at new Promise (<anonymous>)
+    at Query.run (C:\Users\hp\Desktop\progect final\server\node_modules\sequelize\lib\dialects\sqlite\query.js:183:12)
+    at C:\Users\hp\Desktop\progect final\server\node_modules\sequelize\lib\sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async SQLiteQueryInterface.select (C:\Users\hp\Desktop\progect final\server\node_modules\sequelize\lib\dialects\abstract\query-interface.js:407:12)
+    at async Card.findAll (C:\Users\hp\Desktop\progect final\server\node_modules\sequelize\lib\model.js:1140:21)
+    at async Card.findOne (C:\Users\hp\Desktop\progect final\server\node_modules\sequelize\lib\model.js:1240:12)
+    at async C:\Users\hp\Desktop\progect final\server\index.js:22:26
+[2026-04-27T13:03:08.310Z] ERROR: SQLITE_ERROR: no such column: qrCode
+Error
+    at Database.<anonymous> (C:\Users\hp\Desktop\progect final\server\node_modules\sequelize\lib\dialects\sqlite\query.js:185:27)
+    at C:\Users\hp\Desktop\progect final\server\node_modules\sequelize\lib\dialects\sqlite\query.js:183:50
+    at new Promise (<anonymous>)
+    at Query.run (C:\Users\hp\Desktop\progect final\server\node_modules\sequelize\lib\dialects\sqlite\query.js:183:12)
+    at C:\Users\hp\Desktop\progect final\server\node_modules\sequelize\lib\sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async SQLiteQueryInterface.select (C:\Users\hp\Desktop\progect final\server\node_modules\sequelize\lib\dialects\abstract\query-interface.js:407:12)
+    at async Card.findAll (C:\Users\hp\Desktop\progect final\server\node_modules\sequelize\lib\model.js:1140:21)
+    at async Card.findOne (C:\Users\hp\Desktop\progect final\server\node_modules\sequelize\lib\model.js:1240:12)
+    at async C:\Users\hp\Desktop\progect final\server\index.js:22:26
+[2026-04-27T13:03:54.806Z] ERROR: SQLITE_ERROR: no such column: qrCode
+Error
+    at Database.<anonymous> (C:\Users\hp\Desktop\progect final\server\node_modules\sequelize\lib\dialects\sqlite\query.js:185:27)
+    at C:\Users\hp\Desktop\progect final\server\node_modules\sequelize\lib\dialects\sqlite\query.js:183:50
+    at new Promise (<anonymous>)
+    at Query.run (C:\Users\hp\Desktop\progect final\server\node_modules\sequelize\lib\dialects\sqlite\query.js:183:12)
+    at C:\Users\hp\Desktop\progect final\server\node_modules\sequelize\lib\sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async SQLiteQueryInterface.select (C:\Users\hp\Desktop\progect final\server\node_modules\sequelize\lib\dialects\abstract\query-interface.js:407:12)
+    at async Card.findAll (C:\Users\hp\Desktop\progect final\server\node_modules\sequelize\lib\model.js:1140:21)
+    at async Card.findOne (C:\Users\hp\Desktop\progect final\server\node_modules\sequelize\lib\model.js:1240:12)
+    at async C:\Users\hp\Desktop\progect final\server\index.js:22:26
+[2026-04-27T13:06:47.037Z] ERROR: SQLITE_ERROR: no such column: qrCode
+Error
+    at Database.<anonymous> (C:\Users\hp\Desktop\progect final\server\node_modules\sequelize\lib\dialects\sqlite\query.js:185:27)
+    at C:\Users\hp\Desktop\progect final\server\node_modules\sequelize\lib\dialects\sqlite\query.js:183:50
+    at new Promise (<anonymous>)
+    at Query.run (C:\Users\hp\Desktop\progect final\server\node_modules\sequelize\lib\dialects\sqlite\query.js:183:12)
+    at C:\Users\hp\Desktop\progect final\server\node_modules\sequelize\lib\sequelize.js:315:28
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async SQLiteQueryInterface.select (C:\Users\hp\Desktop\progect final\server\node_modules\sequelize\lib\dialects\abstract\query-interface.js:407:12)
+    at async Card.findAll (C:\Users\hp\Desktop\progect final\server\node_modules\sequelize\lib\model.js:1140:21)
+    at async Card.findOne (C:\Users\hp\Desktop\progect final\server\node_modules\sequelize\lib\model.js:1240:12)
+    at async C:\Users\hp\Desktop\progect final\server\index.js:22:26
