@@ -1,21 +1,41 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
 import Webcam from "react-webcam";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function IDCardGeneration() {
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    department: '',
-    validUntil: ''
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState(() => {
+    const saved = localStorage.getItem('id_form_data');
+    return saved ? JSON.parse(saved) : {
+      firstName: '',
+      lastName: '',
+      department: '',
+      validUntil: ''
+    };
   });
 
-  const [capturedImage, setCapturedImage] = useState(null);
+  const [capturedImage, setCapturedImage] = useState(() => {
+    return localStorage.getItem('id_captured_image') || null;
+  });
+
   const [showCamera, setShowCamera] = useState(false);
   const [loading, setLoading] = useState(false);
   const [generatedCard, setGeneratedCard] = useState(null);
   const webcamRef = useRef(null);
+
+  useEffect(() => {
+    localStorage.setItem('id_form_data', JSON.stringify(formData));
+  }, [formData]);
+
+  useEffect(() => {
+    if (capturedImage) {
+      localStorage.setItem('id_captured_image', capturedImage);
+    } else {
+      localStorage.removeItem('id_captured_image');
+    }
+  }, [capturedImage]);
 
   const capture = useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
@@ -44,7 +64,11 @@ function IDCardGeneration() {
       if (response.data.success) {
         setGeneratedCard(response.data.card);
         alert("ID Generated Successfully!");
-        // We don't reset immediately so the user can see the generated card
+        // Clear local storage after successful generation if desired, 
+        // but user might want to keep it as a template? 
+        // Let's clear it to avoid confusion for the next one.
+        localStorage.removeItem('id_form_data');
+        localStorage.removeItem('id_captured_image');
       }
     } catch (error) {
       console.error(error);
@@ -56,9 +80,13 @@ function IDCardGeneration() {
   };
 
   const videoConstraints = {
-    width: 400,
-    height: 400,
     facingMode: "user"
+  };
+
+  const handleCameraError = (error) => {
+    console.error("Camera Error:", error);
+    alert("Camera error: " + error.toString() + "\nPlease make sure you have allowed camera access and you are using HTTPS or localhost.");
+    setShowCamera(false);
   };
 
   return (
@@ -92,6 +120,7 @@ function IDCardGeneration() {
                         ref={webcamRef}
                         screenshotFormat="image/jpeg"
                         videoConstraints={videoConstraints}
+                        onUserMediaError={handleCameraError}
                         className="w-full h-full object-cover"
                       />
                       <button 
@@ -150,14 +179,24 @@ function IDCardGeneration() {
                   >
                     Clear
                   </button>
-                  <button 
-                    onClick={handleGenerate}
-                    disabled={loading}
-                    className={`px-6 py-3 rounded-md bg-primary text-on-primary shadow-sm active:scale-98 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                    type="button"
-                  >
-                    {loading ? 'Generating...' : 'Generate ID'}
-                  </button>
+                  {generatedCard ? (
+                    <button 
+                      onClick={() => navigate('/management')}
+                      className="px-6 py-3 rounded-md bg-secondary text-on-secondary shadow-sm active:scale-98"
+                      type="button"
+                    >
+                      View in Management
+                    </button>
+                  ) : (
+                    <button 
+                      onClick={handleGenerate}
+                      disabled={loading}
+                      className={`px-6 py-3 rounded-md bg-primary text-on-primary shadow-sm active:scale-98 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      type="button"
+                    >
+                      {loading ? 'Generating...' : 'Generate ID'}
+                    </button>
+                  )}
                 </div>
               </form>
             </div>

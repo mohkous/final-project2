@@ -1,84 +1,135 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
+import axios from 'axios';
 
 function Dashboard() {
+  const [usersData, setUsersData] = useState([]);
+  const [activitiesData, setActivitiesData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [usersRes, activitiesRes] = await Promise.all([
+          axios.get('http://localhost:5000/api/users'),
+          axios.get('http://localhost:5000/api/activities')
+        ]);
+        setUsersData(usersRes.data);
+        setActivitiesData(activitiesRes.data);
+      } catch (error) {
+        console.error("Error fetching dashboard data", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const totalUsers = usersData.length;
+  let activeCards = 0;
+  let expiredCards = 0;
+
+  usersData.forEach(user => {
+    if (user.Cards && user.Cards.length > 0) {
+      user.Cards.forEach(card => {
+        if (card.status === 'Active') activeCards++;
+        else expiredCards++;
+      });
+    }
+  });
+
   const metrics = [
     {
       title: 'Total Users',
-      value: '2.4M',
-      trend: '+12% this month',
+      value: totalUsers.toLocaleString(),
+      trend: 'Real-time',
       icon: 'group',
       iconColor: 'text-primary',
       trendColor: 'text-secondary'
     },
     {
       title: 'Active Cards',
-      value: '1.8M',
-      trend: '+5% this month',
+      value: activeCards.toLocaleString(),
+      trend: 'Real-time',
       icon: 'verified',
       iconColor: 'text-secondary',
       trendColor: 'text-secondary'
     },
     {
       title: 'Expired Cards',
-      value: '45.2K',
-      trend: 'Stable',
+      value: expiredCards.toLocaleString(),
+      trend: 'Real-time',
       icon: 'warning',
       iconColor: 'text-error',
       trendColor: 'text-on-surface-variant'
     },
     {
       title: 'Pending Verifications',
-      value: '1,204',
-      trend: '+24% required attention',
+      value: '0',
+      trend: 'All caught up',
       icon: 'pending_actions',
       iconColor: 'text-on-tertiary-fixed-variant',
-      trendColor: 'text-error'
+      trendColor: 'text-secondary'
     }
   ];
 
-  const activities = [
-    {
-      type: 'issued',
-      title: 'New Card Issued',
-      details: 'ID: 908-223',
-      subtitle: 'Approved by Admin A. Smith',
-      time: '2 MINS AGO',
-      icon: 'how_to_reg',
-      bg: 'bg-secondary-fixed',
-      color: 'text-on-secondary-fixed'
-    },
-    {
-      type: 'failed',
-      title: 'Verification Failed',
-      details: 'ID: 445-190',
-      subtitle: 'Biometric mismatch detected.',
-      time: '15 MINS AGO',
-      icon: 'block',
-      bg: 'bg-error-container',
-      color: 'text-on-error-container'
-    },
-    {
-      type: 'update',
-      title: 'System Update',
-      details: 'v2.4.1 deployed',
-      subtitle: 'Security patches applied.',
-      time: '1 HOUR AGO',
-      icon: 'update',
-      bg: 'bg-surface-variant',
-      color: 'text-on-surface-variant'
-    },
-    {
-      type: 'sync',
-      title: 'Data Sync',
-      details: 'Regional Hub B',
-      subtitle: 'Completed successfully.',
-      time: '3 HOURS AGO',
-      icon: 'sync',
-      bg: 'bg-tertiary-fixed',
-      color: 'text-on-tertiary-fixed'
+  const timeAgo = (dateStr) => {
+    if (!dateStr) return 'JUST NOW';
+    const seconds = Math.floor((new Date() - new Date(dateStr)) / 1000);
+    let interval = seconds / 31536000;
+    if (interval > 1) return Math.floor(interval) + " YRS AGO";
+    interval = seconds / 2592000;
+    if (interval > 1) return Math.floor(interval) + " MOS AGO";
+    interval = seconds / 86400;
+    if (interval > 1) return Math.floor(interval) + " DAYS AGO";
+    interval = seconds / 3600;
+    if (interval > 1) return Math.floor(interval) + " HRS AGO";
+    interval = seconds / 60;
+    if (interval > 1) return Math.floor(interval) + " MINS AGO";
+    return Math.floor(Math.max(0, seconds)) + " SECS AGO";
+  };
+
+  const getIconForType = (type) => {
+    switch(type) {
+      case 'issued': return 'how_to_reg';
+      case 'failed': return 'block';
+      case 'verified': return 'check_circle';
+      case 'update': return 'update';
+      case 'sync': return 'sync';
+      default: return 'info';
     }
-  ];
+  };
+
+  const getBgForType = (type) => {
+    switch(type) {
+      case 'issued': return 'bg-secondary-fixed';
+      case 'failed': return 'bg-error-container';
+      case 'verified': return 'bg-primary-container';
+      case 'update': return 'bg-surface-variant';
+      case 'sync': return 'bg-tertiary-fixed';
+      default: return 'bg-surface-variant';
+    }
+  };
+
+  const getColorForType = (type) => {
+    switch(type) {
+      case 'issued': return 'text-on-secondary-fixed';
+      case 'failed': return 'text-on-error-container';
+      case 'verified': return 'text-on-primary-container';
+      case 'update': return 'text-on-surface-variant';
+      case 'sync': return 'text-on-tertiary-fixed';
+      default: return 'text-on-surface-variant';
+    }
+  };
+
+  const activities = activitiesData.slice(0, 10).map(act => ({
+    type: act.type,
+    title: act.title,
+    details: act.details,
+    subtitle: act.subtitle,
+    time: timeAgo(act.createdAt),
+    icon: getIconForType(act.type),
+    bg: getBgForType(act.type),
+    color: getColorForType(act.type)
+  }));
+
 
   return (
     <div className="bg-background text-on-background font-body-md antialiased flex h-screen overflow-hidden">

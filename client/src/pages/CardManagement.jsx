@@ -7,6 +7,8 @@ function CardManagement() {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const [searchTerm, setSearchTerm] = useState('');
+
   useEffect(() => {
     const fetchCards = async () => {
       try {
@@ -15,7 +17,8 @@ function CardManagement() {
           (user.Cards || []).map(card => ({
             ...card,
             userName: `${user.firstName} ${user.lastName}`,
-            department: user.department
+            department: user.department,
+            profileImage: user.image
           }))
         );
         setCards(allCards);
@@ -27,6 +30,11 @@ function CardManagement() {
     };
     fetchCards();
   }, []);
+
+  const filteredCards = cards.filter(card => 
+    card.userName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    card.idNumber.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleDownload = () => {
     if (!selectedCard?.qrCode) return;
@@ -70,9 +78,22 @@ function CardManagement() {
         </header>
 
         <main className="flex-1 mt-16 p-margin-desktop w-full max-w-[1400px] overflow-y-auto">
-          <div className="mb-stack-lg">
-            <h2 className="font-h2 text-h2 text-on-surface">Card Management</h2>
-            <p className="font-body-md text-body-md text-on-surface-variant">View status and generate QR codes for all issued digital IDs.</p>
+          <div className="mb-stack-lg flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+              <h2 className="font-h2 text-h2 text-on-surface">Card Management</h2>
+              <p className="font-body-md text-body-md text-on-surface-variant">View status and generate QR codes for all issued digital IDs.</p>
+            </div>
+            
+            <div className="relative w-full md:w-80">
+              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+              <input 
+                type="text" 
+                placeholder="Search by name or ID..." 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-2.5 bg-surface-container-low border border-outline-variant rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-body-sm"
+              />
+            </div>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-gutter">
@@ -90,10 +111,11 @@ function CardManagement() {
                 <tbody className="divide-y divide-outline-variant">
                   {loading ? (
                     <tr><td colSpan="4" className="py-10 text-center font-body-md text-on-surface-variant">Loading cards...</td></tr>
-                  ) : cards.length === 0 ? (
-                    <tr><td colSpan="4" className="py-10 text-center font-body-md text-on-surface-variant">No cards found.</td></tr>
+                  ) : filteredCards.length === 0 ? (
+                    <tr><td colSpan="4" className="py-10 text-center font-body-md text-on-surface-variant">No cards found matching your search.</td></tr>
                   ) : (
-                    cards.map((card) => (
+                    filteredCards.map((card) => (
+
                       <tr key={card.id} className="hover:bg-surface-bright transition-colors group">
                         <td className="py-4 px-6 font-data-mono text-data-mono text-sm">{card.idNumber}</td>
                         <td className="py-4 px-6">
@@ -123,26 +145,42 @@ function CardManagement() {
             {/* QR Preview Section */}
             <div className="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm p-8 flex flex-col items-center justify-center min-h-[400px]">
               {selectedCard ? (
-                <div className="text-center space-y-6">
-                  <h3 className="font-h3 text-h3 text-primary">Saved QR Code for {selectedCard.userName}</h3>
-                  <div className="bg-white p-4 rounded-2xl shadow-md border border-outline-variant inline-block">
-                    {selectedCard.qrCode ? (
-                      <img src={selectedCard.qrCode} alt="QR Code" className="w-[200px] h-[200px]" />
-                    ) : (
-                      <div className="w-[200px] h-[200px] flex items-center justify-center bg-surface-container text-on-surface-variant">No QR Saved</div>
-                    )}
+                <div className="w-full space-y-8">
+                  <div className="flex flex-col items-center gap-4 text-center">
+                    <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-primary/10 shadow-inner bg-surface-container">
+                      {selectedCard.profileImage ? (
+                        <img src={selectedCard.profileImage} alt="Profile" className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="material-symbols-outlined text-4xl text-on-surface-variant flex items-center justify-center h-full">person</span>
+                      )}
+                    </div>
+                    <div>
+                      <h3 className="font-h3 text-h3 text-on-surface">{selectedCard.userName}</h3>
+                      <p className="font-body-md text-on-surface-variant">{selectedCard.department}</p>
+                    </div>
                   </div>
-                  <div className="space-y-2">
-                    <p className="font-data-mono text-data-mono text-on-surface-variant">ID: {selectedCard.idNumber}</p>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant italic">This is the secure QR code stored in the identity database.</p>
+
+                  <div className="flex flex-col items-center gap-6">
+                    <div className="bg-white p-4 rounded-2xl shadow-md border border-outline-variant inline-block">
+                      {selectedCard.qrCode ? (
+                        <img src={selectedCard.qrCode} alt="QR Code" className="w-[180px] h-[180px]" />
+                      ) : (
+                        <div className="w-[180px] h-[180px] flex items-center justify-center bg-surface-container text-on-surface-variant">No QR Saved</div>
+                      )}
+                    </div>
+                    <div className="text-center space-y-1">
+                      <p className="font-data-mono text-primary font-bold">ID: {selectedCard.idNumber}</p>
+                      <p className="font-body-xs text-on-surface-variant">Valid until: {selectedCard.validUntil ? new Date(selectedCard.validUntil).toLocaleDateString() : 'N/A'}</p>
+                    </div>
                   </div>
+
                   <div className="flex flex-col gap-3">
                     <button 
                       onClick={handleDownload}
                       disabled={!selectedCard.qrCode}
-                      className="w-full bg-primary text-on-primary px-8 py-3 rounded-lg font-medium hover:bg-on-surface transition-all active:scale-95 flex items-center justify-center gap-2 disabled:opacity-50"
+                      className="w-full bg-primary text-on-primary px-8 py-3 rounded-lg font-medium hover:bg-on-surface transition-all active:scale-95 flex items-center justify-center gap-2 disabled:opacity-50 shadow-sm"
                     >
-                      <span className="material-symbols-outlined">download</span>
+                      <span className="material-symbols-outlined text-sm">download</span>
                       Download QR Code
                     </button>
                     

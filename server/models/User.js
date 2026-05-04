@@ -31,7 +31,7 @@ const User = sequelize.define('User', {
     defaultValue: 'Active'
   },
   image: {
-    type: DataTypes.STRING
+    type: DataTypes.TEXT
   }
 });
 

@@ -121,6 +121,6 @@ app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server listening on port ${PORT}`);
 });
 
-sequelize.sync().then(() => console.log('DB Synced'));
+sequelize.sync({ alter: true }).then(() => console.log('DB Synced'));
 
 setInterval(() => {}, 10000);
