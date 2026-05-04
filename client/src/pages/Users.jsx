@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
-import axios from 'axios';
+import api from '../api';
 
 function Users() {
   const [users, setUsers] = useState([]);
@@ -9,7 +9,7 @@ function Users() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/users');
+        const response = await api.get('/users');
         // Map backend data to frontend format if necessary
         const mappedUsers = response.data.map(u => ({
           id: u.Cards?.[0]?.idNumber || 'N/A',

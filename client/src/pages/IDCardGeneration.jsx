@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
 import Webcam from "react-webcam";
-import axios from 'axios';
+import api from '../api';
 import { useNavigate } from 'react-router-dom';
 
 function IDCardGeneration() {
@@ -56,7 +56,7 @@ function IDCardGeneration() {
 
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:5000/api/generate-id', {
+      const response = await api.post('/generate-id', {
         ...formData,
         image: capturedImage
       });

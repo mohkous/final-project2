@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
-import axios from 'axios';
+import api from '../api';
 
 function Dashboard() {
   const [usersData, setUsersData] = useState([]);
@@ -10,8 +10,8 @@ function Dashboard() {
     const fetchData = async () => {
       try {
         const [usersRes, activitiesRes] = await Promise.all([
-          axios.get('http://localhost:5000/api/users'),
-          axios.get('http://localhost:5000/api/activities')
+          api.get('/users'),
+          api.get('/activities')
         ]);
         setUsersData(usersRes.data);
         setActivitiesData(activitiesRes.data);

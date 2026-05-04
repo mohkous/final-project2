@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 
 function VerifyCard() {
   const { id } = useParams();
@@ -13,7 +13,7 @@ function VerifyCard() {
     try {
       setLoading(true);
       setError(null);
-      const response = await axios.get(`http://localhost:5000/api/verify-card/${searchId}`);
+      const response = await api.get(`/verify-card/${searchId}`);
       if (response.data.success) {
         setCardData(response.data.card);
       } else {

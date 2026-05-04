@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
-import axios from 'axios';
+import api from '../api';
 
 function CardManagement() {
   const [selectedCard, setSelectedCard] = useState(null);
@@ -12,7 +12,7 @@ function CardManagement() {
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/users');
+        const response = await api.get('/users');
         const allCards = response.data.flatMap(user => 
           (user.Cards || []).map(card => ({
             ...card,
@@ -48,7 +48,7 @@ function CardManagement() {
 
   const handleCopyLink = () => {
     if (!selectedCard?.idNumber) return;
-    const url = `http://localhost:5173/verify/${selectedCard.idNumber}`;
+    const url = `${window.location.origin}/verify/${selectedCard.idNumber}`;
     navigator.clipboard.writeText(url);
     alert("Verification link copied to clipboard!");
   };

@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
@@ -49,7 +50,7 @@ app.post('/api/generate-id', async (req, res) => {
     });
 
     // Generate QR Code
-    const verificationUrl = `http://localhost:3000/verify/${idNumber}`;
+    const verificationUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/verify/${idNumber}`;
     const qrCodeBase64 = await QRCode.toDataURL(verificationUrl);
 
     const newCard = await Card.create({
@@ -116,7 +117,7 @@ app.get('/api/activities', async (req, res) => {
   res.json(activities);
 });
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server listening on port ${PORT}`);
 });
