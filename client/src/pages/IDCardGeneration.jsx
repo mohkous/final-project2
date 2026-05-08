@@ -54,6 +54,11 @@ function IDCardGeneration() {
       return;
     }
 
+    if (!formData.firstName || !formData.lastName) {
+      alert("Please enter both First Name and Last Name!");
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await api.post('/generate-id', {
