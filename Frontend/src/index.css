@@ -1,0 +1,249 @@
+@import "tailwindcss";
+
+/* ============================================================
+   DESIGN SYSTEM — DARK NAVY THEME
+   Primary: Deep Navy | Accent: Electric Cyan | Trust: Teal
+   ============================================================ */
+
+@theme {
+  /* Core Dark Palette */
+  --color-bg-deep:         #060b18;
+  --color-bg-base:         #0a0e1a;
+  --color-surface:         #0f1629;
+  --color-surface-mid:     #141c33;
+  --color-surface-high:    #1a2238;
+  --color-surface-higher:  #1e2845;
+  --color-surface-card:    #0d1225;
+
+  /* Borders */
+  --color-border:          #1e2d4a;
+  --color-border-bright:   #2a3d60;
+  --color-border-glow:     rgba(0, 212, 255, 0.25);
+
+  /* Accent — Electric Cyan */
+  --color-cyan:            #00d4ff;
+  --color-cyan-dim:        #00a8cc;
+  --color-cyan-muted:      rgba(0, 212, 255, 0.15);
+  --color-cyan-glow:       rgba(0, 212, 255, 0.35);
+
+  /* Accent — Teal (Success/Active) */
+  --color-teal:            #00c9a7;
+  --color-teal-dim:        #00a085;
+  --color-teal-muted:      rgba(0, 201, 167, 0.15);
+
+  /* Accent — Gold (Warning/Metric) */
+  --color-gold:            #f59e0b;
+  --color-gold-muted:      rgba(245, 158, 11, 0.15);
+
+  /* Accent — Error */
+  --color-danger:          #ef4444;
+  --color-danger-muted:    rgba(239, 68, 68, 0.15);
+  --color-danger-dim:      #dc2626;
+
+  /* Text */
+  --color-text-primary:    #e2e8f0;
+  --color-text-secondary:  #94a3b8;
+  --color-text-muted:      #475569;
+  --color-text-inverse:    #060b18;
+
+  /* Gradients (as CSS custom props, used via inline styles or arbitrary) */
+  --gradient-cyan:         linear-gradient(135deg, #00d4ff, #00c9a7);
+  --gradient-navy:         linear-gradient(180deg, #0f1629 0%, #060b18 100%);
+  --gradient-card:         linear-gradient(135deg, #1a2238, #0f1629);
+
+  /* Typography */
+  --font-family-display:   "Outfit", system-ui, sans-serif;
+  --font-family-body:      "Inter", system-ui, sans-serif;
+  --font-family-mono:      "JetBrains Mono", monospace;
+
+  /* Radii */
+  --radius-sm:    6px;
+  --radius-md:    10px;
+  --radius-lg:    14px;
+  --radius-xl:    20px;
+  --radius-full:  9999px;
+
+  /* Shadows */
+  --shadow-card:  0 4px 24px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.3);
+  --shadow-glow:  0 0 20px rgba(0, 212, 255, 0.2);
+  --shadow-glow-teal: 0 0 20px rgba(0, 201, 167, 0.2);
+
+  /* Legacy compat — keep old tokens pointing to new values */
+  --color-background:           #0a0e1a;
+  --color-on-background:        #e2e8f0;
+  --color-surface-container-lowest: #0f1629;
+  --color-surface-container-low:   #141c33;
+  --color-surface-container:       #1a2238;
+  --color-surface-container-high:  #1e2845;
+  --color-surface-container-highest: #232c50;
+  --color-surface-bright:          #1a2238;
+  --color-surface-variant:         #1e2845;
+  --color-on-surface:              #e2e8f0;
+  --color-on-surface-variant:      #94a3b8;
+  --color-outline:                 #2a3d60;
+  --color-outline-variant:         #1e2d4a;
+  --color-primary:                 #00d4ff;
+  --color-on-primary:              #060b18;
+  --color-primary-container:       #00d4ff;
+  --color-on-primary-container:    #060b18;
+  --color-primary-fixed:           rgba(0,212,255,0.15);
+  --color-primary-fixed-dim:       rgba(0,212,255,0.08);
+  --color-on-primary-fixed:        #060b18;
+  --color-on-primary-fixed-variant:#1a2238;
+  --color-inverse-primary:         #00a8cc;
+  --color-secondary:               #00c9a7;
+  --color-on-secondary:            #060b18;
+  --color-secondary-container:     rgba(0,201,167,0.2);
+  --color-on-secondary-container:  #00c9a7;
+  --color-secondary-fixed:         #00c9a7;
+  --color-secondary-fixed-dim:     #00a085;
+  --color-on-secondary-fixed:      #060b18;
+  --color-on-secondary-fixed-variant: #00a085;
+  --color-tertiary:                #f59e0b;
+  --color-on-tertiary:             #060b18;
+  --color-tertiary-container:      #060b18;
+  --color-on-tertiary-container:   #f59e0b;
+  --color-tertiary-fixed:          rgba(245,158,11,0.15);
+  --color-tertiary-fixed-dim:      rgba(245,158,11,0.08);
+  --color-on-tertiary-fixed:       #060b18;
+  --color-on-tertiary-fixed-variant: #b45309;
+  --color-error:                   #ef4444;
+  --color-on-error:                #fff;
+  --color-error-container:         rgba(239,68,68,0.2);
+  --color-on-error-container:      #ef4444;
+  --color-inverse-surface:         #e2e8f0;
+  --color-inverse-on-surface:      #0a0e1a;
+  --color-surface-dim:             #060b18;
+  --color-surface-tint:            #00d4ff;
+  --color-surface-container-lowest-rgb: 15, 22, 41;
+}
+
+/* ============================================================
+   GLOBAL RESET & BASE
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: "Inter", system-ui, sans-serif;
+  color-scheme: dark;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #0a0e1a;
+  color: #e2e8f0;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================
+   UTILITY CLASSES
+   ============================================================ */
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0e1a;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e2d4a;
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2a3d60;
+}
+
+/* Selection */
+::selection {
+  background: rgba(0, 212, 255, 0.25);
+  color: #e2e8f0;
+}
+
+/* Gradient text utility */
+.gradient-text {
+  background: linear-gradient(135deg, #00d4ff, #00c9a7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glassmorphism card */
+.glass-card {
+  background: rgba(15, 22, 41, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Glow button */
+.btn-glow {
+  background: linear-gradient(135deg, #00d4ff, #00c9a7);
+  color: #060b18;
+  font-weight: 700;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+}
+.btn-glow:hover {
+  box-shadow: 0 0 32px rgba(0, 212, 255, 0.55);
+  transform: translateY(-1px);
+}
+.btn-glow:active {
+  transform: scale(0.97);
+}
+
+/* Subtle card border glow on hover */
+.card-hover {
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.card-hover:hover {
+  box-shadow: 0 0 0 1px rgba(0, 212, 255, 0.2), 0 8px 32px rgba(0, 0, 0, 0.4);
+  border-color: rgba(0, 212, 255, 0.25) !important;
+}
+
+/* Animated gradient background for login */
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes floatUp {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 20px rgba(0,212,255,0.2); }
+  50%       { box-shadow: 0 0 40px rgba(0,212,255,0.5); }
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spinGlow {
+  to { transform: rotate(360deg); }
+}
+
+/* Input focus glow */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+}
+
+/* Material symbols size fix */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+  user-select: none;
+}
